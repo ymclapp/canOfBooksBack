@@ -6,8 +6,11 @@ mongoose.connect(process.env.MONGODB_URL);
 const Books = require('./models/Book');
 
 async function seed() {
-    const myBook = new Books(
-        {
+    //Deleting all of my books and starting over
+    console.log('Deleting existing books')
+    await Books.deleteMany({});
+
+    const myBook = new Books({
         title:  "Where the Red Fern Grows",
         description: "A sad book",
         status: "Out",
@@ -25,7 +28,9 @@ async function seed() {
         status: "In",
         email: "ymclapp@yahoo.com",
         })
-    await myBook.save();
+
+    myBook.save();
+    mongoose.disconnect();
 }
 
 seed();

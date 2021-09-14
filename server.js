@@ -16,7 +16,7 @@ db.once('open', function() {
 
 
   //Import our Mongoose model
-  const Books = require('./models/Book');  //Books is the model and Book is the file
+  const Books = require('./models/bookRoute');  //Books is the model and Book is the file
   
   const app = express();
 
@@ -30,7 +30,7 @@ db.once('open', function() {
 // })
 
 
-app.get('/books', async (req, res) => {  //books is page name
+app.get('/bookRoute', async (req, res) => {  //books is page name
   const title = req.query.title;
 
   const findQuery = {};
@@ -39,7 +39,7 @@ app.get('/books', async (req, res) => {  //books is page name
   }
   const books = await Books.find(findQuery);  //Books is the model
 
-  res.send(books); //page name
+  res.send(bookRoute); //page name
 })
 
 

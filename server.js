@@ -13,15 +13,34 @@ db.once('open', function() {
 
 mongoose.connect(process.env.MONGODB_URL);
 
+const Books = require('./models/Book');  //Books is the model and Book is the file
+
+
+
 const app = express();
+
 app.use(cors());
 
-const PORT = process.env.PORT || 3001;
+//Route Handlers
 
-app.get('/test', (request, response) => {
+// app.get('/test', (request, response) => {
+//   response.send('test request received')
+// })
 
-  response.send('test request received')
+app.get('/books', async (req, res) => {  //books is page name
+  const title = req.query.title;
 
+  const findQuery = {};
+  if (title) {
+    findQuery.title = title;
+  }
+  const books = await Books.find(findQuery);  //Books is the model
+
+  res.send(books); //page name
 })
 
-app.listen(PORT, () => console.log(`listening on ${PORT}`));
+const PORT = process.env.PORT;
+if(!parseInt(PORT)) throw 'Invalid PORT';
+
+app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`));
+

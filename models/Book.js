@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const bookSchema = new Schema({
@@ -8,6 +9,6 @@ const bookSchema = new Schema({
     email: String,
 });
 
-const Model = mongoose.model('Books', bookSchema);
+const Books = mongoose.model('Books', bookSchema);
 
 module.exports = Books;

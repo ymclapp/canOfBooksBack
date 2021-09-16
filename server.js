@@ -30,7 +30,9 @@ db.once('open', function() {
 // })
 
 
-app.get('/bookRoute', async (req, res) => {  //books is page name
+// app.get('/bookRoute', Books);
+
+app.get('/bookTitle', async (req, res) => {  //books is page name
   const title = req.query.title;
 
   const findQuery = {};
@@ -39,7 +41,7 @@ app.get('/bookRoute', async (req, res) => {  //books is page name
   }
   const books = await Books.find(findQuery);  //Books is the model
 
-  res.send(bookRoute); //page name
+  res.send(bookTitle); //page name
 })
 
 

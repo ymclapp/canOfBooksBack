@@ -25,13 +25,6 @@ db.once('open', function() {
 
 //Route Handlers
 
-// app.get('/test', (request, response) => {
-//   response.send('test request received')
-// })
-
-
-// app.get('/bookRoute', Books);
-
 app.get('/bookRoute', async (req, res) => {  //books is page name
   const title = req.query.title;
 
@@ -44,6 +37,8 @@ app.get('/bookRoute', async (req, res) => {  //books is page name
   res.send(allBooks); 
 })
 
+app.post('/bookRoute', postBooks);
+
 
 //Start server
 const PORT = process.env.PORT;
@@ -51,4 +46,16 @@ if(!parseInt(PORT)) throw 'Invalid PORT';
 
 app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`));
 
+//adding a book
+async function postBooks(req, res) {
+  console.log('headers', req.headers);
+  console.log('body', req.body);
 
+  try {
+    const newBook = await Books.create(req.body);
+    res.send(newBook);
+  }
+  catch (err) {
+    handleError(err, res);
+  }
+}

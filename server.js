@@ -32,16 +32,16 @@ db.once('open', function() {
 
 // app.get('/bookRoute', Books);
 
-app.get('/bookTitle', async (req, res) => {  //books is page name
+app.get('/bookRoute', async (req, res) => {  //books is page name
   const title = req.query.title;
 
   const findQuery = {};
   if (title) {
     findQuery.title = title;
   }
-  const books = await Books.find(findQuery);  //Books is the model
+  const allBooks = await Books.find(findQuery);  //Books is the model
 
-  res.send(bookTitle); //page name
+  res.send(allBooks); 
 })
 
 

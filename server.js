@@ -36,7 +36,11 @@ app.get('/bookRoute', async (req, res) => {  //books is page name
   res.send(books); 
 })
 
-app.post('/bookRoute', postBooks);
+app.post('/addbook', addBookHandler);
+function addBookHandler(req, res) {
+  let {title, description, status, email} = req.body;
+}
+
 app.delete('/bookRoute/:id', deleteBook)
 app.put('/bookRoute/:id', putBook)
 

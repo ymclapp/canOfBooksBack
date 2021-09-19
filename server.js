@@ -4,12 +4,10 @@ require('dotenv').config();
 const express = require('express');
 
 const mongoose = require('mongoose');
-
-
-var db = mongoose.connection;
+let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', function() {
-  console.log('Connected to mongo!')
+  console.log('Connected to Mongo!')
   });
   
   mongoose.connect(process.env.MONGODB_URL);
@@ -22,6 +20,7 @@ db.once('open', function() {
 
   const cors = require('cors');
   app.use(cors());
+  app.use(express.json());
 
 //Route Handlers
 
@@ -32,12 +31,14 @@ app.get('/bookRoute', async (req, res) => {  //books is page name
   if (title) {
     findQuery.title = title;
   }
-  const allBooks = await Books.find(findQuery);  //Books is the model
+  const books = await Books.find(findQuery);  //Books is the model
 
-  res.send(allBooks); 
+  res.send(books); 
 })
 
 app.post('/bookRoute', postBooks);
+app.delete('/bookRoute/:id', deleteBook)
+app.put('/bookRoute/:id', putBook)
 
 
 //Start server
@@ -59,3 +60,38 @@ async function postBooks(req, res) {
     handleError(err, res);
   }
 }
+
+async function putBook(req, res) {
+  let id = req.params.id;
+  let bookUpdate = req.body;
+
+  let options = {
+    new: true, //return the updated book, not the old version
+    overwrite: true, //replace the whole book, instead of "patching"
+  }
+  try{
+    let updatedBook = await Books.findByIdAndUpdate(id, bookUpdate, options);
+    res.send(updatedBook);
+  }
+  catch (err) {
+    handleError (err, res);
+  }
+}
+
+async function deleteBook(req,res) {
+  let id = req.params.id;
+
+  try {
+    await Books.findByIdAndDelete(id);
+    res.status(204).send();
+  }
+  catch(err) {
+    handleError(err, res);
+  }
+}
+
+function handleError (err, res) {
+  console.error(err);
+  res.status(500).send('Ugh!  Server error.');
+}
+
